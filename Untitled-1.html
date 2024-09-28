@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Jogo de História da Espanha</title>
+    <style>
+        /* Añadir un fondo al cuerpo */
+        body {
+            background-image: url('https://img.freepik.com/foto-gratis/esfera-celeste-resplandeciente-orbita-galaxia-estrellada-generada-ia_188544-15599.jpg'); /* Cambia esta URL por tu imagen de fondo */
+            background-size: cover;
+            font-family: Arial, sans-serif;
+            color: white;
+            text-align: center;
+            margin: 0;
+            padding: 0;
+        }
+
+        /* Estilos para la caja principal */
+        h1 {
+            margin-top: 30px;
+            font-size: 2.5em;
+        }
+
+        #pergunta {
+            font-size: 1.5em;
+            margin-bottom: 20px;
+        }
+
+        #opcoes {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            margin-top: 20px;
+        }
+
+        #opcoes button {
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            padding: 15px 25px;
+            margin: 10px;
+            font-size: 1.2em;
+            cursor: pointer;
+            border-radius: 8px;
+            transition: background-color 0.3s ease;
+            width: 150px; /* Hace que los botones sean cuadrados */
+            height: 50px;
+        }
+
+        #opcoes button:hover {
+            background-color: #45a049;
+        }
+
+        #mensagem {
+            margin-top: 20px;
+            font-size: 1.3em;
+            font-weight: bold;
+        }
+
+        /* Centrando el contenedor */
+        .container {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 80%;
+            max-width: 800px;
+            background-color: rgba(0, 0, 0, 0.6); /* Fondo semitransparente para mejor legibilidad */
+            padding: 30px;
+            border-radius: 15px;
+        }
+    </style>
+    <script>
+        const perguntas = [
+            {pergunta: "Em que ano começou a Guerra Civil Espanhola?", opcoes: ["1936", "1914", "1923", "1939"], respostaCorreta: "1936"},
+            {pergunta: "Quem foi o primeiro rei da dinastia Bourbon na Espanha?", opcoes: ["Carlos I", "Felipe V", "Fernando VII", "Isabel II"], respostaCorreta: "Felipe V"},
+            {pergunta: "Em que ano foi assinada a Constituição de Cádiz?", opcoes: ["1808", "1812", "1820", "1833"], respostaCorreta: "1812"},
+            {pergunta: "Qual rainha ficou conhecida como 'A Católica'?", opcoes: ["Isabel I", "Juana I", "Isabel II", "Isabel a Católica"], respostaCorreta: "Isabel I"},
+            {pergunta: "Quem foi o ditador da Espanha de 1939 a 1975?", opcoes: ["Francisco Franco", "Manuel Azaña", "Miguel Primo de Rivera", "Adolfo Suárez"], respostaCorreta: "Francisco Franco"},
+            {pergunta: "Em que ano morreu o ditador Francisco Franco?", opcoes: ["1975", "1973", "1969", "1979"], respostaCorreta: "1975"},
+            {pergunta: "Que evento importante ocorreu na Espanha em 1492?", opcoes: ["Descobrimento da América", "Reconquista", "Fim da Inquisição", "Independência da Espanha"], respostaCorreta: "Descobrimento da América"},
+            {pergunta: "Qual foi o último território a ser reconquistado pelos Reis Católicos?", opcoes: ["Granada", "Sevilha", "Toledo", "Córdoba"], respostaCorreta: "Granada"},
+            {pergunta: "Que imperador governou o vasto império espanhol e também foi imperador do Sacro Império Romano?", opcoes: ["Carlos I", "Felipe II", "Fernando VII", "Carlos III"], respostaCorreta: "Carlos I"},
+            {pergunta: "Em que ano terminou a Guerra de Independência Espanhola contra a França?", opcoes: ["1814", "1808", "1820", "1833"], respostaCorreta: "1814"},
+            {pergunta: "Quem foi o primeiro presidente da Segunda República Espanhola?", opcoes: ["Manuel Azaña", "Niceto Alcalá-Zamora", "Francisco Largo Caballero", "Juan Negrín"], respostaCorreta: "Niceto Alcalá-Zamora"},
+            {pergunta: "Qual famosa batalha naval foi travada pela Espanha contra a Inglaterra em 1588?", opcoes: ["A batalha da Armada Invencível", "A batalha de Trafalgar", "A batalha do Mediterrâneo", "A batalha de Lepanto"], respostaCorreta: "A batalha da Armada Invencível"},
+            {pergunta: "Que líder militar francês invadiu a Espanha em 1808?", opcoes: ["Napoleão Bonaparte", "Carlos XIV", "Luís XIV", "Maximiliano I"], respostaCorreta: "Napoleão Bonaparte"},
+            {pergunta: "Qual foi o nome do tratado que pôs fim à Guerra Hispano-Americana em 1898?", opcoes: ["Tratado de Paris", "Tratado de Versalhes", "Tratado de Utrecht", "Tratado de Tordesilhas"], respostaCorreta: "Tratado de Paris"},
+            {pergunta: "Em que ano os Jogos Olímpicos de Barcelona foram realizados?", opcoes: ["1992", "1988", "1996", "2000"], respostaCorreta: "1992"},
+            {pergunta: "Qual rei abdicou em 2014 a favor de seu filho Felipe VI?", opcoes: ["Juan Carlos I", "Carlos IV", "Alfonso XIII", "Fernando VII"], respostaCorreta: "Juan Carlos I"},
+            {pergunta: "Qual famosa obra da literatura espanhola foi escrita por Miguel de Cervantes?", opcoes: ["Dom Quixote de la Mancha", "La Celestina", "El Cid", "Lazarillo de Tormes"], respostaCorreta: "Dom Quixote de la Mancha"},
+            {pergunta: "Qual rei espanhol foi deposto por Napoleão durante a invasão da Espanha?", opcoes: ["Fernando VII", "Carlos IV", "Felipe VI", "Juan Carlos I"], respostaCorreta: "Fernando VII"},
+            {pergunta: "Em que ano foi aprovada a atual Constituição espanhola?", opcoes: ["1978", "1975", "1981", "1986"], respostaCorreta: "1978"},
+            {pergunta: "Qual cidade foi a capital do Califado de Córdoba na Idade Média?", opcoes: ["Córdoba", "Granada", "Sevilha", "Toledo"], respostaCorreta: "Córdoba"},
+            {pergunta: "Que monarca instaurou a Inquisição na Espanha em 1478?", opcoes: ["Isabel I de Castela", "Carlos I", "Fernando VII", "Felipe II"], respostaCorreta: "Isabel I de Castela"},
+            {pergunta: "Qual grande pintor espanhol é o autor de 'As Meninas'?", opcoes: ["Diego Velázquez", "Pablo Picasso", "Francisco de Goya", "Salvador Dalí"], respostaCorreta: "Diego Velázquez"},
+            {pergunta: "Qual importante batalha da Reconquista foi travada em 1212?", opcoes: ["Batalha de Las Navas de Tolosa", "Batalha de Lepanto", "Batalha de Aljubarrota", "Batalha de Covadonga"], respostaCorreta: "Batalha de Las Navas de Tolosa"},
+            {pergunta: "Quem foi o primeiro rei da Espanha unificada após a Reconquista?", opcoes: ["Fernando II de Aragão", "Felipe II", "Carlos I", "Carlos III"], respostaCorreta: "Fernando II de Aragão"},
+            {pergunta: "Que navegador genovês foi patrocinado pelos Reis Católicos para encontrar uma nova rota para as Índias?", opcoes: ["Cristóvão Colombo", "Américo Vespúcio", "Vasco da Gama", "Fernão de Magalhães"], respostaCorreta: "Cristóvão Colombo"},
+            {pergunta: "Que importante pintor espanhol é conhecido por seu estilo surrealista?", opcoes: ["Salvador Dalí", "Pablo Picasso", "Joan Miró", "Francisco de Goya"], respostaCorreta: "Salvador Dalí"},
+            {pergunta: "Em que ano ocorreu o Desastre de 98?", opcoes: ["1898", "1895", "1900", "1888"], respostaCorreta: "1898"},
+            {pergunta: "Que monarca restaurou a monarquia na Espanha em 1975 após a ditadura franquista?", opcoes: ["Juan Carlos I", "Felipe VI", "Fernando VII", "Alfonso XIII"], respostaCorreta: "Juan Carlos I"},
+            {pergunta: "Qual famosa batalha da Guerra Civil Espanhola foi travada entre julho e novembro de 1938?", opcoes: ["Batalha do Ebro", "Batalha de Madri", "Batalha de Brunete", "Batalha de Teruel"], respostaCorreta: "Batalha do Ebro"},
+            {pergunta: "Que rei foi deposto durante a Revolução Gloriosa de 1868?", opcoes: ["Isabel II", "Fernando VII", "Alfonso XII", "Carlos IV"], respostaCorreta: "Isabel II"},
+            {pergunta: "Em que ano foi realizada a Exposição Universal em Sevilha?", opcoes: ["1992", "1986", "2000", "1978"], respostaCorreta: "1992"},
+        ];
+
+        let perguntaAtual = 0;
+        let pontuacao = 0;
+
+        function mostrarPergunta() {
+            const pergunta = perguntas[perguntaAtual];
+            document.getElementById('pergunta').textContent = pergunta.pergunta;
+            const opcoes = document.getElementById('opcoes');
+            opcoes.innerHTML = "";  // Limpar opções anteriores
+
+            // Criar os botões de opções
+            pergunta.opcoes.forEach(opcao => {
+                const botao = document.createElement('button');
+                botao.textContent = opcao;
+                botao.addEventListener('click', () => verificarResposta(opcao));
+                opcoes.appendChild(botao);
+            });
+        }
+
+        function verificarResposta(resposta) {
+            const pergunta = perguntas[perguntaAtual];
+
+            if (resposta === pergunta.respostaCorreta) {
+                pontuacao++;
+                document.getElementById('mensagem').textContent = "Correto!";
+            } else {
+                document.getElementById('mensagem').textContent = `Incorreto. A resposta correta era ${pergunta.respostaCorreta}.`;
+            }
+
+            perguntaAtual++;
+
+            if (perguntaAtual < perguntas.length) {
+                setTimeout(() => {
+                    document.getElementById('mensagem').textContent = "";
+                    mostrarPergunta();
+                }, 2000);
+            } else {
+                document.getElementById('mensagem').textContent = `Jogo terminado. Sua pontuação é ${pontuacao} de ${perguntas.length}.`;
+                document.getElementById('opcoes').innerHTML = "";  // Limpar opções
+            }
+        }
+
+        // Iniciar o jogo mostrando a primeira pergunta quando a página carregar
+        window.onload = mostrarPergunta;
+    </script>
+</head>
+<body>
+    <div class="container">
+        <h1>Jogo de História da Espanha</h1>
+        <p id="pergunta"></p>
+        <div id="opcoes"></div>
+        <p id="mensagem"></p>
+    </div>
+</body>
+</html>
